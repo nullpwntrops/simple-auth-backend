@@ -1,0 +1,39 @@
+name: simple_auth_backend
+services:
+
+  ### Auth service #############################################
+  auth_svc:
+    env_file: .env.docker
+    build: .
+    command: npm run debug
+    volumes:
+      - ./dist:/usr/src/app/dist
+    ports:
+      - "2000:3000"
+      - "5861:5858"
+    depends_on: [auth_db, mailhog]
+
+  ### Auth database ###########################################
+  ### This is a PostgreSQL database for the auth service ######
+  auth_db:
+    image: postgres
+    restart: always
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=auth_db
+      - PGUSER=<your_postgres_user>
+      - POSTGRES_PASSWORD=<your_postgres_password>
+
+  ### Mail trap ################################################
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports: ['1025:1025', '8025:8025']
+
+volumes:
+  dbdata:
+    driver: local
