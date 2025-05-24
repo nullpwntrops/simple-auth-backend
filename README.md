@@ -198,7 +198,7 @@ point for a Single Page Application (SPA).
 Clone the repository.
 
 ```
-git clone https://github.com/hhung01/simple-auth-backend.git
+git clone https://github.com/nullpwntrops/simple-auth-backend.git
 cd simple-auth-backend
 ```
 
